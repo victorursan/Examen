@@ -49,7 +49,7 @@ class QuizRepository(Repository):
     def __save(self, quiz: Quiz):
         try:
             with open(self.__file_name, "a") as f:
-                q = quiz.Id + ", " + quiz.question + ", " + quiz.answer + ", " + quiz.correct + "\n"
+                q = str(quiz.Id) + ", " + quiz.question + ", " + quiz.answer + ", " + quiz.correct
                 f.write(q)
         except Exception as ex:
             print(RepositoryError("Error opening file " + self.__file_name, ex))

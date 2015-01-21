@@ -1,3 +1,6 @@
-Which of the following functions belong to the python built-ins?, id, ident, identity, ident
-Which one is a feline?, cat, dog, rat, cat
-What city is this one?, Cluj-Napoca, Oradea, Iasi, Cluj-Napoca
+1, Which of the following functions belong to the python built-ins?, id, ident, identity, ident
+2, Which one is a feline?, cat, dog, rat, cat
+3, What city is this one?, Cluj-Napoca, Oradea, Iasi, Cluj-Napoca
+4, What color is the sky?, white, blue, red, blue
+5, What color is the water?, white, blue, red, blue
+6, What color are my eyes?, brown, blue, green, blue

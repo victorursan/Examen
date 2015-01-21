@@ -39,7 +39,7 @@ class QuestionRepository(Repository):
                 for line in f:
                     try:
                         arr = line.split(", ")
-                        q = Question(int(arr[0]), arr[1], arr[2], arr[3], arr[4], )
+                        q = Question(int(arr[0]), arr[1], arr[2], arr[3], arr[4], arr[5])
                         super().save(q)
                     except Exception as ex:
                         raise RepositoryError("Corrupted file", ex)

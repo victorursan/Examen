@@ -14,56 +14,79 @@ class Console(object):
             print(ex)
             quit()
 
-    def add_ui(self, *args):
-        try:
-            code = args[1]
-            date = args[2]
-            value = int(args[3])
-            self.__grade_ctrl.add_grade(code, date, value)
-        except ValidatorError as ve:
-            print(ve)
-        except DuplicateIdError as de:
-            print(de)
-        except ValueError as vee:
-            print(vee)
-
-    def delete_ui(self, *args):
-        pass
-        # try:
-        #     code = args[1]
-        #     date = args[2]
-        #     self.__grade_ctrl.remove_grade(code, date)
-        # except ValidatorError as ve:
-        #     print(ve)
-        # except RepositoryError as re:
-        #     print(re)
-
-    def list_ui(self, *args):
-        li = self.__grade_ctrl.converted_data()
-        self.pagination(li)
-
-    def print_grade(self, grade):
-        print(grade.code, grade.name, grade.date, grade.value)
-
-    def pagination(self, li):
-        for i in range(1, len(li) + 1):
-            self.print_grade(li[i - 1])
-            if i % 3 == 0:
-                print("________________________________________", end="\n\n")
-                inp = input("Next Page:")
-                if inp.lower() != "yes":
-                    break
-
-    def quit_ui(self, *args):
+    def quit_ui(self):
         quit()
 
-    def run(self):
-        options = {"add": self.add_ui, "delete": self.delete_ui, "list": self.list_ui, "quit": self.quit_ui}
-        while True:
+    def quiz_ui(self):
+        print("Quiz\n")
+        questions = self.__question_ctrl.get_random(3)
+        i = 0
+        cor = 0
+        al = 0
+        while i < len(questions) and al != len(questions) - 1:
+            q = questions[i]
+            print(q.question + "\n" + "a) " + q.a + " b) " + q.b + " c) " + q.c)
+            options = {"a": q.a, "b": q.b, "c": q.c}
+            if self.__quiz_ctrl.find(q.Id):
+                print("prev/next")
+                inp = input("> ")
+                if inp == "prev":
+                    i -= 1
+                elif inp == "next":
+                    i += 1
+            else:
+                print("prev/answer/next")
+                inp = input("> ")
+
+                if inp == "prev":
+                    i -= 1
+                elif inp == "next":
+                    i += 1
+                else:
+                    al += 1
+                    try:
+                        inp = inp.split(" ")
+                        print(inp[1])
+                        answer = options[inp[1]]
+                        self.__quiz_ctrl.add_quiz(q.Id, q.question, answer, q.correct)
+                        if answer == q.correct.rstrip("\n"):
+                            cor += 1
+                            print("Congrats")
+                            print("Correct: " + q.correct.rstrip("\n"))
+                            print("your answer: " + answer)
+                        else:
+                            print("Failed")
+                            print("Correct: " + q.correct.rstrip("\n"))
+                            print("your answer: " + answer)
+                        print(str(cor) + "/" + str(al))
+                        i += 1
+                    except KeyError:
+                        print("option wasn't implemented")
+                    except ValidatorError as ve:
+                        print(ve)
+
+
+
+    def review_ui(self):
+        print("Review\n")
+        quizes = self.__quiz_ctrl.get_all()
+        i = 0
+        while i < len(quizes):
+            q = quizes[i]
+            print(q.question + "\n" + "Answer: " + q.answer + " Correct: " + q.correct)
+            print("prev/next")
             inp = input("> ")
-            inp = inp.strip().split(" ")
+            if inp == "prev":
+                i -= 1
+            elif inp == "next":
+                i += 1
+    def run(self):
+        options = {"quiz": self.quiz_ui, "review": self.review_ui, "exit": self.quit_ui}
+        while True:
+            print("Idle\n")
+            inp = input("> ")
             try:
-                options[inp[0]](*inp)
+                options[inp]()
             except KeyError:
                 print("option wasn't implemented")
             except ValidatorError as ve:

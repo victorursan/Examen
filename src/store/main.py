@@ -14,7 +14,7 @@ class Application(object):
     @classmethod
     def run(cls):
         quiz_repo = QuizRepository(QuizValidator(), "quizes.txt")
-        question_repo = QuestionRepository(QuestionValidator(), "question.txt")
+        question_repo = QuestionRepository(QuestionValidator(), "questions.txt")
 
         quiz_ctrl = QuizController(quiz_repo)
         question_ctrl = QuestionController(question_repo)
