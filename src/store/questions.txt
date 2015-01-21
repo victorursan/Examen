@@ -4,3 +4,7 @@
 4, What color is the sky?, white, blue, red, blue
 5, What color is the water?, white, blue, red, blue
 6, What color are my eyes?, brown, blue, green, blue
+7, What is the meaning of life?, 42, red, chocolate, 42
+8, What exam is this?, fp, asc, logica, fp
+9, What happened?, we failed, we passed, nothing, nothing
+10, What is my name?, Victor, Mike, Johny, Victor

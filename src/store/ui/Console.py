@@ -18,20 +18,21 @@ class Console(object):
         quit()
 
     def quiz_ui(self):
-        print("Quiz\n")
+        print("\nQuiz\n")
         questions = self.__question_ctrl.get_random(3)
         i = 0
         cor = 0
         al = 0
-        while i < len(questions) and al != len(questions) - 1:
+        while i < len(questions) and al != len(questions):
             q = questions[i]
-            print(q.question + "\n" + "a) " + q.a + " b) " + q.b + " c) " + q.c)
+            print("\n" + q.question + "\n" + "a) " + q.a + " b) " + q.b + " c) " + q.c)
             options = {"a": q.a, "b": q.b, "c": q.c}
             if self.__quiz_ctrl.find(q.Id):
                 print("prev/next")
                 inp = input("> ")
                 if inp == "prev":
-                    i -= 1
+                    if i != 0:
+                        i -= 1
                 elif inp == "next":
                     i += 1
             else:
@@ -39,14 +40,14 @@ class Console(object):
                 inp = input("> ")
 
                 if inp == "prev":
-                    i -= 1
+                    if i != 0:
+                        i -= 1
                 elif inp == "next":
                     i += 1
-                else:
+                elif inp.startswith("answer"):
                     al += 1
                     try:
                         inp = inp.split(" ")
-                        print(inp[1])
                         answer = options[inp[1]]
                         self.__quiz_ctrl.add_quiz(q.Id, q.question, answer, q.correct)
                         if answer == q.correct.rstrip("\n"):
@@ -61,14 +62,15 @@ class Console(object):
                         print(str(cor) + "/" + str(al))
                         i += 1
                     except KeyError:
-                        print("option wasn't implemented")
+                        al -= 1
+                        print("there is no such value")
                     except ValidatorError as ve:
                         print(ve)
-
-
+                else:
+                    print("invalid option")
 
     def review_ui(self):
-        print("Review\n")
+        print("\nReview\n")
         quizes = self.__quiz_ctrl.get_all()
         i = 0
         while i < len(quizes):
@@ -77,13 +79,15 @@ class Console(object):
             print("prev/next")
             inp = input("> ")
             if inp == "prev":
-                i -= 1
+                if i != 0:
+                    i -= 1
             elif inp == "next":
                 i += 1
+
     def run(self):
         options = {"quiz": self.quiz_ui, "review": self.review_ui, "exit": self.quit_ui}
         while True:
-            print("Idle\n")
+            print("\nIdle\n")
             inp = input("> ")
             try:
                 options[inp]()
